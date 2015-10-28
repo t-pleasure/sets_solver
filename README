@@ -1,0 +1,5 @@
+
+FILES:
+ * sets_solver.py -- contains code to solve the sets problem
+ * test_sets_solver.py -- contains unit tests for the sets solver
+ * run_test.sh -- contains command to run unit tests. We can simply run it via "bash run_test.sh"
