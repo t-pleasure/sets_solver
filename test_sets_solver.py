@@ -10,11 +10,11 @@ class SolverTest(unittest.TestCase):
     # set3 is the same as set2 except with a few cards swapped
     set3 = [create_card("1111"), create_card("2222"), create_card("3233")]
     # checks to make sure set1 has a valid number property
-    self.assertTrue(check_property("number", set1))  
+    self.assertTrue(check_property(lambda c: c.number, set1))  
     # checks to make sure set2 has an INVALID color property
-    self.assertFalse(check_property("color", set2))  
+    self.assertFalse(check_property(lambda c: c.color, set2))  
     # checks to make sure set3 has an INVALID color
-    self.assertFalse(check_property("color", set3))
+    self.assertFalse(check_property(lambda c: c.color, set3))
     self.assertTrue(is_set_valid(set1))
     self.assertFalse(is_set_valid(set2))
     self.assertFalse(is_set_valid(set3))
@@ -26,13 +26,13 @@ class SolverTest(unittest.TestCase):
     def convert(soln):
       res = set()
       for s in soln:
-        res.add(frozenset(map(card_to_str, s)))
+        res.add(frozenset(s))
       return res
     # create deck
     deck = create_deck()
 
     # run the solver on multiple deck of cards (specified by N_ITERS)
-    N_ITERS = 30 
+    N_ITERS = 30
     for iteration in range(N_ITERS):
       # randomly create a deck by sampling from the original deck
       sample_deck = random.sample(deck, random.randint(3, 81))
