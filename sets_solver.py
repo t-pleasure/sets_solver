@@ -2,10 +2,6 @@
 # Card and deck creation functions #
 ####################################
 POSSIBLE_VALUES = set([1,2,3]) # possible values for properties
-NUMBER_INDX = 0
-COLOR_INDX = 1
-FILL_INDX = 2
-SHAPE_INDX = 3
 
 ## Card representation
 class Card(object):
@@ -125,7 +121,7 @@ def pair_solver(deck):
     * deck <list<Card>> -- deck of cards.
   Output:
     * list<list<Card>> -- list of valid sets. Note that sets of cards are
-      represented by list of dicts.
+      represented by lis of dicts.
   """
   n = len(deck)
   good_sets = set()
@@ -138,10 +134,10 @@ def pair_solver(deck):
         # ensure that the card exists in the deck
         if req in deck:
           # append proposed set to good_set
-          proposal = tuple(sorted((card1, card2, req)))
+          proposal = frozenset(sorted((card1, card2, req)))
           good_sets.add(proposal)
   # convert set to proper form and return
-  return list(good_sets)
+  return map(list, good_sets)
 
 def required_cards(card1, card2):
   """
@@ -165,8 +161,9 @@ def required_cards(card1, card2):
     for col in required_value(lambda c: c.color):
       for fil in required_value(lambda c: c.fill):
         for shp in required_value(lambda c: c.shape):
-          assert is_set_valid([card1, card2, Card(num, col, fil, shp)])
-          yield Card(num, col, fil, shp)
+          retCard = Card(num, col, fil, shp)
+          assert is_set_valid([card1, card2, retCard])
+          yield retCard
   
 if __name__ == "__main__":
   import time, random
@@ -185,6 +182,13 @@ if __name__ == "__main__":
   end = time.time()
   print "solving with pair-solver took (%f secs) and found (%d solutions)"%(end-start, len(soln_pair))
 
-  print "difference between the results:", set(tuple(s) for s in soln_brute) - set(tuple(s) for s in soln_pair) 
+  # helper function to ensure the solution contains no duplicate entries
+  def unique_sets(soln):
+    res = set()
+    for s in soln:
+      res.add(frozenset(s))
+    return res
+
+  print "difference between the results:", unique_sets(soln_brute) - unique_sets(soln_pair)
   
   
