@@ -1,3 +1,5 @@
+Code to solve the Setz Puzzle (http://www.setgame.com/set/puzzle_rules)
+
 
 FILES:
  * sets_solver.py -- contains code to solve the sets problem
